@@ -1,0 +1,6 @@
+{
+  "name": "UKA ROM Kitchen",
+  "description": "Android ROM Kitchen & GSI Unpacker/Repacker suite with root/non-root workspaces, APK signer, MetaGen and terminal console.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
