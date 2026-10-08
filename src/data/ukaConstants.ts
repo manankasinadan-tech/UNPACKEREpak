@@ -384,25 +384,27 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-apk:
-    name: Build Release APK
+  build:
+    name: Build Android APK
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
 
-      - name: Install Web Dependencies
-        run: npm ci
+      - name: Install Dependencies
+        run: npm install --legacy-peer-deps
 
-      - name: Build Web Production Assets
+      - name: Build Web Application
         run: npm run build
+
+      - name: Sync Capacitor Android
+        run: npx cap sync android
 
       - name: Setup Java JDK 17
         uses: actions/setup-java@v4
@@ -413,21 +415,16 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Initialize Android Native Project
-        run: |
-          npx cap add android || true
-          npx cap sync android
-
-      - name: Build Debug/Release APK with Gradle
+      - name: Build Android APK with Gradle
         run: |
           cd android
           chmod +x ./gradlew
           ./gradlew assembleDebug --stacktrace
 
-      - name: Upload APK Artifact
+      - name: Upload Android APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: UKA-Unpacker-Kitchen-v4.5.apk
+          name: UKA-Unpacker-Kitchen-v4.5-Debug.apk
           path: android/app/build/outputs/apk/debug/*.apk
-          retention-days: 14
+          retention-days: 30
 `;
